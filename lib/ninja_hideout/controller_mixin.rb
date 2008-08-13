@@ -6,16 +6,11 @@ module NinjaHideout
       @page_title = title
     end
 
-    def call_page(title)
-      page_is(title)
-    end
-
-    def title=(pt)
-      page_is(pt)
-    end
+    alias call_page page_is
+    alias title= page_is
 
     def page_title
-      return (@page_title || params[:action].humanize)
+      return(@page_title || params[:action].humanize)
     end
 
     def warn_user(message)

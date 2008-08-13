@@ -14,7 +14,7 @@ module NinjaHideout
     end
 
     def page_title
-      h (@page_title || @title || params[:action].titleize)
+      h(@page_title || @title || params[:action].titleize)
     end
 
     def form_row(opts = {}, &blk)
@@ -52,6 +52,10 @@ module NinjaHideout
       else
         return "#{start_year} &mdash; #{Time.now.year.to_s}"
       end
+    end
+    
+    def clear
+      content_tag(:div, "&nbsp;", :class => "clear")
     end
 
     private

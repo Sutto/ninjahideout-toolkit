@@ -20,7 +20,7 @@ module NinjaHideout
         use_sluggable_finder = opts[:sluggable_finder] || false
         use_cache = opts[:cache] || false
         cache_method = opts[:cache_key] || ""
-        conversion = "" # use_sluggable_finder ? "" : ".to_i"
+        conversion = ""
         instance_var_name = "@#{(opts[:instance_var] || name).to_s.gsub(/^[@]+/, "")}"
         pmodel = get_prepares_model(opts[:model] || name)
         method_name = :"prepares_#{name.to_s.underscore}"
