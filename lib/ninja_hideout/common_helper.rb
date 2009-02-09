@@ -5,24 +5,16 @@ module NinjaHideout
       "Hello!"
     end
 
-    def can_has_css(*args)
+    def has_css(*args)
       content_for(:extra_head, stylesheet_link_tag(*args))
     end
 
-    def can_has_js(*args)
+    def has_js(*args)
       content_for(:extra_head, javascript_include_tag(*args))
     end
 
     def page_title
       h(@page_title || @title || params[:action].titleize)
-    end
-
-    def form_row(opts = {}, &blk)
-      div_with_default_class("row", opts, &blk)
-    end
-
-    def button_row(opts = {}, &blk)
-      div_with_default_class("buttons", opts, &blk)
     end
 
     def flash_messages_for(name, opts = {})
@@ -56,6 +48,29 @@ module NinjaHideout
     
     def clear
       content_tag(:div, "&nbsp;", :class => "clear")
+    end
+    
+    def desc(text)
+      content_tag(:p, text, :class => "description-field")
+    end
+
+    # Extension for the semantic form builder
+    # used to provide a fairly standardised way
+    # to access the errors.
+    def errs(object, field, prepend_text = "This field")
+      object = object.respond_to?(:errors) ? object : instance_variable_get("@#{object}")
+      errors = object.errors.on(field)
+      if errors
+        text = "#{prepend_text || ""} #{errors.to_a.to_sentence(:skip_last_comma => true)}"
+        return content_tag(:p, text,:class => "errors-field")
+      end
+    end
+
+    def analytics(tracker)
+      returning "" do |c|
+        c << javascript_tag("var gaJsHost = ((\"https:\" == document.location.protocol) ? \"https://ssl.\" : \"http://www.\"); document.write(unescape(\"%3Cscript src='\" + gaJsHost + \"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E\"));")
+        c << javascript_tag("try { var pageTracker = _gat._getTracker(\"#{tracker}\"); pageTracker._trackPageview(); } catch(err) {}")
+      end
     end
 
     private
